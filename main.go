@@ -203,7 +203,7 @@ func (m *Account) taskgift(userId string, c *chan int) {
 	*c <- 1
 }
 
-func entrance(ctx context.Context, event DefineEvent) (string, error) {
+func entrance(ctx context.Context, event Account) (string, error) {
 	for _, v := range *readFile() {
 		c := make(chan int, 6)
 		a := *v.getToken()
