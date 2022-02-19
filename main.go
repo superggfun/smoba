@@ -218,7 +218,7 @@ func entrance(ctx context.Context, event DefineEvent) (string, error) {
 			<-c
 		}
 	}
-	return "成功", nil
+	return "执行完毕", nil
 }
 
 func main() {
