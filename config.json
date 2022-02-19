@@ -1,0 +1,12 @@
+// 配置文件
+[
+  {
+    "accessToken": "",
+    "openId": "",
+    "roleId": "",
+    "sig": "",
+    "timestamp": "",
+    "msdkEncodeParam": "",
+    "msdkToken": ""
+  }
+]
