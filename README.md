@@ -4,6 +4,13 @@
 * 华为云函数，免费自动每天刷
 
 ## 编译使用
+*如果不使用华为云函数请在函数入口main下直接使用run()方法
+```go
+func main() {
+	run()
+}
+```
+*编译*
 ```cmd
 go mod tidy
 set GOOS=linux
