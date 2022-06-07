@@ -7,7 +7,7 @@
 [使用手册](https://gosmoba.vercel.app/)
 
 ## 编译使用
-*如果不使用华为云函数请在函数入口main下直接使用run()方法*
+*如果不使用华为云函数请在函数入口main下直接使用run()函数*
 ```go
 func main() {
 	run()
