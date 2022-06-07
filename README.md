@@ -13,11 +13,20 @@ func main() {
 	run()
 }
 ```
-*编译*
-```cmd
+*编译(Linux) 华为云函数*
+```Terminal
 go mod tidy
 set GOOS=linux
 set GOARCH=amd64
+go build -o handler main.go
+zip main.zip handler config.go static
+```
+
+*编译(Windows)*
+```cmd
+go mod tidy
+set GOOS=windows
+set GOARCH=386
 go build -o handler main.go
 ```
 
