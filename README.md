@@ -1,9 +1,15 @@
 # smoba
-* 王者荣耀 王者营地自动签到每周浏览点赞任务
+* 王者营地自动签到每周浏览点赞任务
 * 微信推送
 * 华为云函数，免费自动每天刷
 
-## 开始使用
+## 编译使用
+```cmd
+go mod tidy
+set GOOS=linux
+set GOARCH=amd64
+go build -o handler main.go
+```
 ## 使用手册
 [使用手册](https://gosmoba.vercel.app/)
 ## 免责声明
