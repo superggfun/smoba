@@ -7,6 +7,12 @@
 ## 使用手册
 [使用手册](https://gosmoba.vercel.app/)
 
+## 修复
+修复华为云函数显示 open config.json: no such file or directory & unexpected end of JSON input
+说明：之前是可以正常运行的，突然就报这个错误了，可能后面华为云改了读取静态文件的位置。
+原因：在咨询过华为云客服之后，原来的config.json路径改成code/config.json路径就能使用，微信推送读取markdown文件同理。读取json配置错误导致后面解析json文件错误。
+*如需自行编译使用，请删除源码中读取文件路径前面的"code/"，否则就会出现上面找不到配置文件错误。
+
 ## 编译使用
 *如果不使用华为云函数请在函数入口main下直接使用run()函数*
 ```go
