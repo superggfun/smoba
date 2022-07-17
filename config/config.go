@@ -7,7 +7,7 @@ import (
 )
 
 func ReadFile() Config {
-	f, err := ioutil.ReadFile("config.json")
+	f, err := ioutil.ReadFile("code/config.json")
 
 	if err != nil {
 		fmt.Print(err)
