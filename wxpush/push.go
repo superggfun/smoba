@@ -8,7 +8,7 @@ import (
 )
 
 func Push(markdown Markdown) error {
-	tmpl, err := template.ParseFiles("static/template.md")
+	tmpl, err := template.ParseFiles("code/static/template.md")
 	if err != nil {
 		panic(err)
 	}
@@ -22,7 +22,7 @@ func Push(markdown Markdown) error {
 }
 
 func PushE(markdown Markdown) error {
-	tmpl, err := template.ParseFiles("static/error.md")
+	tmpl, err := template.ParseFiles("code/static/error.md")
 	if err != nil {
 		panic(err)
 	}
