@@ -164,6 +164,16 @@ func run() {
 
 }
 
+func init() {
+    leancloud.Engine.Define("hello", hello)
+}
+
+func hello(req *leancloud.FunctionRequest) (interface{}, error) {
+    return map[string]string{
+        "hello": "world",
+    }, nil
+}
+
 func executeTask(req *leancloud.FunctionRequest) (interface{}, error) {
     // 这里添加您的实际定时任务逻辑
 	run()
