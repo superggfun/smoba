@@ -1,36 +1,37 @@
 package doTask
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 func (m *Account) RunTask(TaskId string) ([]string, error) {
+	var any []string
+	var err error
+	fmt.Println(TaskId)
 	switch TaskId {
 	case "2019071900006": //关注作者
-		any, err := m.Subscribe()
-		return any, err
+		any, err = m.Subscribe()
 
-	case "2019071900008": //支持点赞
-		any, err := m.AddedLikes()
-		return any, err
+	case "2022061700002": //支持点赞
+		any, err = m.AddedLikes()
 
 	case "2019072200001": //启动游戏
-		err := m.RunGame()
-		return nil, err
+		err = m.RunGame()
 
 	case "2019071900003": //分享内容
-		err := m.ShareGame()
-		return nil, err
-
-	case "2019071900007": //浏览资讯
-		any, err := m.ViewedNews()
-		return any, err
-
-	case "2019071900005": //获得胜利
-		return nil, errors.New("未完成")
-
+		err = m.ShareGame()
+	case "2022061700001": //浏览资讯
+		any, err = m.ViewedNews()
+	case "2022101100011": //浏览战绩
+		err = m.ViewRecords()
+	case "2022061700004": //获得胜利
+		err = errors.New("未获得胜利")
 	case "2019071900004": //进行游戏
-		return nil, errors.New("未完成")
-
+		err = errors.New("未进行游戏")
 	default:
-		return nil, nil
+		err = errors.New("未知任务")
 	}
+
+	return any, err
 }

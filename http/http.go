@@ -1,77 +1,67 @@
 package http
 
 import (
+	"bytes"
 	"crypto/tls"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"strings"
 )
 
-type Do interface {
-	DoTask(url string, data string) []byte
-	DoGift() []byte
-}
-
-func (m *Account) DoTask(url string, data string) []byte {
+func (m *Account) sendRequest(url string, data string, headers map[string]string) ([]byte, error) {
 	client := &http.Client{Transport: &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}}
-	d := strings.NewReader(data)
-	req, err := http.NewRequest("POST", url, d)
+
+	req, err := http.NewRequest("POST", url, bytes.NewBufferString(data))
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Add("NOENCRYPT", "1")
+	for key, value := range headers {
+		req.Header.Add(key, value)
+	}
+
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer resp.Body.Close()
+
 	bodyText, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return bodyText
 
+	return bodyText, nil
 }
 
-func (m *Account) DoGift(url string, data string, userId string, roleId string) []byte {
-	client := &http.Client{Transport: &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}}
-	d := strings.NewReader(data)
-	req, err := http.NewRequest("POST", url, d)
-	if err != nil {
-		log.Fatal(err)
+func (m *Account) DoTask(url string, data string) ([]byte, error) {
+	headers := map[string]string{
+		"Content-Type": "application/x-www-form-urlencoded",
+		"NOENCRYPT":    "1",
 	}
 
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Add("timestamp", m.Timestamp)
-	req.Header.Add("userId", userId)
-	req.Header.Add("algorithm", "v2")
-	req.Header.Add("openid", m.OpenId)
-	req.Header.Add("encode", "2")
-	req.Header.Add("roleId", roleId)
-	req.Header.Add("source", "smoba_zhushou")
-	req.Header.Add("msdkToken", m.MsdkToken)
-	req.Header.Add("msdkEncodeParam", m.MsdkEncodeParam)
-	req.Header.Add("gameId", "20001")
-	req.Header.Add("sig", m.Sig)
-	req.Header.Add("appid", "1105200115")
-	req.Header.Add("version", "3.1.96a")
-	req.Header.Add("NOENCRYPT", "1")
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-	bodyText, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return bodyText
+	return m.sendRequest(url, data, headers)
+}
 
+func (m *Account) DoGift(url string, data string, userId string, roleId string) ([]byte, error) {
+	headers := map[string]string{
+		"Content-Type":    "application/json",
+		"timestamp":       m.Timestamp,
+		"userId":          userId,
+		"algorithm":       "v2",
+		"openid":          m.OpenId,
+		"encode":          "2",
+		"roleId":          roleId,
+		"source":          "smoba_zhushou",
+		"msdkToken":       m.MsdkToken,
+		"msdkEncodeParam": m.MsdkEncodeParam,
+		"gameId":          "20001",
+		"sig":             m.Sig,
+		"appid":           "1105200115",
+		"version":         "3.1.96a",
+		"NOENCRYPT":       "1",
+	}
+
+	return m.sendRequest(url, data, headers)
 }

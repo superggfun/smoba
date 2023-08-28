@@ -1,15 +1,15 @@
 {
-  "account": [
-      {
-          "accessToken": "",
-          "openId": "",
-          "sig": "",
-          "timestamp": "",
-          "msdkEncodeParam": "",
-          "msdkToken": ""
-      }
-  ],
-  "wxpush": {
-      "pushplus": ""
-  }
+    "account": [
+        {
+            "accessToken": "11AA3E40EB5C0F1AFF30070E405EE8FD",
+            "openId": "AE1F813F81A980DC63927F4831EFCDB3",
+            "sig": "a43aaaa4bad6fa3592339591774bd827",
+            "timestamp": "1689106271929",
+            "msdkEncodeParam": "FB894F3932CE433B88559C3E9CFA20C8C8EE30182E06EC1802079639B13535A808741CE892F0F5DF35E6C520897132CADE9A7388AA9B7B1A9B1C035A4D71A25435D8370798E57091FC5886B3422BAF5A38662FEEA29EE808128EECBB985838A53BC8CFBA734B5B4D53F465DE3BE5A729B068B3778DB4286AF861BD775876643D8F4BB78B23DF51E482726EDEC5CDD49F2769D6B4FA29DA225AEB1F3FF2AAEB19F7C1B7562384E4D99E63F45798A51D49",
+            "msdkToken": "BUOxZmHe"
+        }
+    ],
+    "wxpush": {
+        "pushplus": "c9311dee1cbc4a8a981944e16a55ea8b"
+    }
 }

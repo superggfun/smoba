@@ -4,50 +4,48 @@ import (
 	"encoding/json"
 )
 
-type gNews struct {
+const NewsURL = "https://kohcamp.qq.com/info/listinfov2"
+
+type NewsResponse struct {
 	ReturnCode int    `json:"returnCode"`
 	ReturnMsg  string `json:"returnMsg"`
-	data       `json:"data"`
+	Data       struct {
+		List []NewsItem `json:"list"`
+	} `json:"data"`
 }
 
-type data struct {
-	List []list `json:"list"`
-}
-
-type list struct {
-	infoContent `json:"infoContent"`
-}
-
-type infoContent struct {
-	InfoId string `json:"infoId"`
-	user1  `json:"user"`
-}
-
-type user1 struct {
-	user2 `json:"user"`
-}
-
-type user2 struct {
-	user3 `json:"user"`
-}
-
-type user3 struct {
-	UserId string `json:"userId"`
+type NewsItem struct {
+	InfoContent struct {
+		InfoId string `json:"infoId"`
+		User   struct {
+			User struct {
+				User struct {
+					UserId string `json:"userId"`
+				} `json:"user"`
+			} `json:"user"`
+		} `json:"user"`
+	} `json:"infoContent"`
 }
 
 func (m *Account) GetNews() (map[string]string, error) {
 	u := make(map[string]string)
 	data := `{"page": 0, "channelId": 25818}`
-	bodyText := m.DoGift("https://kohcamp.qq.com/info/listinfov2", data, m.UserId, m.OriginalRoleId)
-	var gNews gNews
-	err := json.Unmarshal(bodyText, &gNews)
+
+	bodyText, err := m.DoGift(NewsURL, data, m.UserId, m.OriginalRoleId)
 	if err != nil {
 		return nil, err
-	} else {
-		for _, v := range gNews.List {
-			if v.InfoId != "" {
-				u[v.UserId] = v.InfoId
-			}
+	}
+
+	var newsResp NewsResponse
+	if err = json.Unmarshal(bodyText, &newsResp); err != nil {
+		return nil, err
+	}
+
+	for _, item := range newsResp.Data.List {
+		infoID := item.InfoContent.InfoId
+		userID := item.InfoContent.User.User.User.UserId
+		if infoID != "" {
+			u[userID] = infoID
 		}
 	}
 	return u, nil

@@ -20,7 +20,10 @@ func (m *Account) RunGift(taskIds []string) error {
 		return nil
 	}
 	data := fmt.Sprintf(`{"cSystem":"android","h5Get":1,"taskIds":%v,"roleId":%v}`, string(a), m.RoleId)
-	bodyText := m.DoGift("https://kohcamp.qq.com/operation/action/rewardtask", data, m.UserId, m.OriginalRoleId)
+	bodyText, err := m.DoGift("https://kohcamp.qq.com/operation/action/rewardtask", data, m.UserId, m.OriginalRoleId)
+	if err != nil {
+		return err
+	}
 	var gift gift
 	err = json.Unmarshal(bodyText, &gift)
 	if err != nil {

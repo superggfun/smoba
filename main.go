@@ -10,12 +10,16 @@ import (
 	"github.com/superggfun/smoba/doTask"
 	"github.com/superggfun/smoba/wxpush"
 	"huaweicloud.com/go-runtime/go-api/context"
-	"huaweicloud.com/go-runtime/pkg/runtime"
 )
 
 func run() {
 	log.Println("开始运行")
-	for i, v := range config.ReadFile().Account {
+	cfg, err := config.ReadConfigFile("config.json") // code/config.json
+	if err != nil {
+		log.Fatalf("Failed to read config file: %v", err)
+		return
+	}
+	for i, v := range cfg.Account {
 		var markdown wxpush.Markdown
 		a := doTask.Input(v)
 		err := a.GetToken()
@@ -159,7 +163,8 @@ func run() {
 
 }
 func main() {
-	runtime.Register(ApigTest)
+	run()
+	//  runtime.Register(ApigTest)
 }
 
 func ApigTest(payload []byte, ctx context.RuntimeContext) (interface{}, error) {

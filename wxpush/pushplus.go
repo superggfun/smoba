@@ -1,13 +1,11 @@
 package wxpush
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"strings"
 )
 
 type data struct {
@@ -17,44 +15,48 @@ type data struct {
 	Template string `json:"template"`
 }
 
-type push struct {
+type pushResponse struct {
 	Code int    `json:"code"`
-	Msg  string `json:"Msg"`
+	Msg  string `json:"msg"`
 }
+
+var httpClient = &http.Client{}
 
 func pushplus(token string, str string) error {
 	url := "http://www.pushplus.plus/send"
-	data := data{token, "王者营地签到", str, "markdown"}
-	s, err := json.Marshal(data)
+	data := data{Token: token, Title: "王者营地签到", Content: str, Template: "markdown"}
+
+	reqBody, err := json.Marshal(data)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
-	client := &http.Client{}
-	d := strings.NewReader(string(s))
-	req, err := http.NewRequest("POST", url, d)
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(reqBody))
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	resp, err := client.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer resp.Body.Close()
+
 	bodyText, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	var push push
+	var push pushResponse
 	err = json.Unmarshal(bodyText, &push)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
-	if push.Code == 200 {
-		return nil
-	} else {
+
+	if push.Code != 200 {
 		return errors.New(push.Msg)
 	}
+
+	return nil
 }

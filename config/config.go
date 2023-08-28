@@ -6,17 +6,17 @@ import (
 	"io/ioutil"
 )
 
-func ReadFile() Config {
-	f, err := ioutil.ReadFile("code/config.json")
-
-	if err != nil {
-		fmt.Print(err)
-	}
-
+func ReadConfigFile(filePath string) (Config, error) {
 	var config Config
-	err = json.Unmarshal(f, &config)
+
+	bytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		fmt.Println(err)
+		return config, fmt.Errorf("failed to read file: %w", err)
 	}
-	return config
+
+	if err = json.Unmarshal(bytes, &config); err != nil {
+		return config, fmt.Errorf("failed to unmarshal json: %w", err)
+	}
+
+	return config, nil
 }

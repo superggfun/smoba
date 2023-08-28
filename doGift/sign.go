@@ -20,9 +20,12 @@ type signData struct {
 
 func (m *Account) Sign() (signData, error) {
 	data := fmt.Sprintf(`{"cSystem":"android","h5Get":1,"roleId":"%v"}`, m.RoleId)
-	bodyText := m.DoGift("https://kohcamp.qq.com/operation/action/signin", data, m.UserId, m.OriginalRoleId)
+	bodyText, err := m.DoGift("https://kohcamp.qq.com/operation/action/signin", data, m.UserId, m.OriginalRoleId)
 	var sign sign
-	err := json.Unmarshal(bodyText, &sign)
+	if err != nil {
+		return sign.signData, err
+	}
+	err = json.Unmarshal(bodyText, &sign)
 	if err != nil {
 		return sign.signData, err
 	} else if sign.ReturnCode != 0 {

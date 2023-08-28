@@ -6,29 +6,50 @@ import (
 	"fmt"
 )
 
-func (m *Account) GetToken() error {
-	data := fmt.Sprintf(`accessToken=%v&loginType=openSdk&openId=%v&cSystem=android&gameId=20001`, m.AccessToken, m.OpenId)
-	bodyText := m.DoTask("https://ssl.kohsocialapp.qq.com:10001/user/login", data)
-	var j dejson
-	err := json.Unmarshal(bodyText, &j)
-	if j.ReturnCode != 0 {
-		return errors.New(j.ReturnMsg)
-	} else if err != nil {
+func (m *Account) sendRequestAndDecode(url string, data string, v interface{}) error {
+	bodyText, err := m.DoTask(url, data)
+	if err != nil {
 		return err
 	}
+
+	err = json.Unmarshal(bodyText, v)
+	if err != nil {
+		return err
+	}
+
+	switch j := v.(type) {
+	case *dejson:
+		if j.ReturnCode != 0 {
+			return errors.New(j.ReturnMsg)
+		}
+	case *chatroles:
+		if j.ReturnCode != 0 {
+			return errors.New(j.ReturnMsg)
+		}
+	}
+
+	return nil
+}
+
+func (m *Account) GetToken() error {
+	data := fmt.Sprintf(`accessToken=%v&loginType=openSdk&openId=%v&cSystem=android&gameId=20001`, m.AccessToken, m.OpenId)
+	var j dejson
+	err := m.sendRequestAndDecode("https://ssl.kohsocialapp.qq.com:10001/user/login", data, &j)
+	if err != nil {
+		return err
+	}
+
 	m.Token = j.Token
 	m.UserId = j.UserId
 	m.UserName = j.UserName
 
 	data = fmt.Sprintf("gameId=20001&token=%v&userId=%v", m.Token, m.UserId)
-	bodyText = m.DoTask("https://ssl.kohsocialapp.qq.com:10001/game/chatroles", data)
 	var chatroles chatroles
-	err = json.Unmarshal(bodyText, &chatroles)
-	if chatroles.ReturnCode != 0 {
-		return errors.New(chatroles.ReturnMsg)
-	} else if err != nil {
+	err = m.sendRequestAndDecode("https://ssl.kohsocialapp.qq.com:10001/game/chatroles", data, &chatroles)
+	if err != nil {
 		return err
 	}
+
 	m.OriginalRoleId = chatroles.Roles[0].OriginalRoleId
 	m.RoleId = chatroles.Roles[0].RoleId
 	m.ServerId = chatroles.Roles[0].ServerId

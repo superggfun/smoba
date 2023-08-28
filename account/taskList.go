@@ -31,18 +31,35 @@ type gifts struct {
 	Name      string `json:"name"`
 }
 
+// 发送请求并解析响应
+func (m *Account) sendGiftRequestAndDecode(url string, data string, v interface{}) error {
+	response, err := m.DoGift(url, data, m.UserId, m.OriginalRoleId)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(response, v)
+	if err != nil {
+		return err
+	}
+
+	switch j := v.(type) {
+	case *tasklist:
+		if j.ReturnCode != 0 {
+			return errors.New(j.ReturnMsg)
+		}
+	}
+
+	return nil
+}
+
 // 获取任务列表
 func (m *Account) TaskList() ([]task, error) {
 	data := fmt.Sprintf(`{"cSystem":"android","h5Get":1,"serverId":"%v","roleId":%v}
 	`, m.ServerId, m.RoleId)
-	list := m.DoGift("https://kohcamp.qq.com/operation/action/tasklist", data, m.UserId, m.OriginalRoleId)
 	var tasks tasklist
-	var d []task
-	err := json.Unmarshal(list, &tasks)
+	err := m.sendGiftRequestAndDecode("https://kohcamp.qq.com/operation/action/tasklist", data, &tasks)
 	if err != nil {
-		return d, err
-	} else if tasks.ReturnCode != 0 {
-		return d, errors.New(tasks.ReturnMsg)
+		return nil, err
 	}
 	return tasks.Data.Task, nil
 }
