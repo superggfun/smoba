@@ -165,18 +165,19 @@ func run() {
 }
 
 func init() {
-    leancloud.Engine.Define("hello", hello)
+    leancloud.Engine.Define("hello", main)
 }
 
-func hello(req *leancloud.FunctionRequest) (interface{}, error) {
+func main(req *leancloud.FunctionRequest) (interface{}, error) {
     return map[string]string{
         "hello": "world",
     }, nil
 }
-
+/*
 func main() {
-	run()
-	hello()
+	//run()
+	client := leancloud.NewEnvClient()
+	leancloud.Engine.Init(client)
 	//  runtime.Register(ApigTest)
 }
 /*
