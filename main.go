@@ -10,6 +10,7 @@ import (
 	"github.com/superggfun/smoba/doTask"
 	"github.com/superggfun/smoba/wxpush"
 	//"huaweicloud.com/go-runtime/go-api/context"
+	"github.com/leancloud/go-sdk/leancloud"
 )
 
 func run() {
@@ -162,6 +163,17 @@ func run() {
 	}
 
 }
+
+func init() {
+    leancloud.Engine.Define("hello", hello)
+}
+
+func hello(req *leancloud.FunctionRequest) (interface{}, error) {
+    return map[string]string{
+        "hello": "world",
+    }, nil
+}
+
 func main() {
 	run()
 	//  runtime.Register(ApigTest)
