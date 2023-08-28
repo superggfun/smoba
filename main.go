@@ -164,14 +164,24 @@ func run() {
 
 }
 
-func init() {
-    leancloud.Engine.Define("hello", main)
+func executeTask(req *leancloud.FunctionRequest) (interface{}, error) {
+    // 这里添加您的实际定时任务逻辑
+	run()
+    return map[string]string{
+        "status": "success",
+    }, nil
 }
 
-func main(req *leancloud.FunctionRequest) (interface{}, error) {
-    return map[string]string{
-        "hello": "world",
-    }, nil
+func main() {
+    // 初始化 LeanCloud 客户端
+    client := leancloud.NewEnvClient()
+    leancloud.Engine.Init(client)
+
+    // 定义云函数
+    leancloud.Engine.Define("executeTaskFunction", executeTask)
+
+    // 在此，您不需要显式地启动任何服务监听，因为 LeanCloud 云函数平台会处理请求并调用您定义的函数。
+    // 如果您在本地测试，您可能需要添加某种方式来启动 HTTP 服务并监听请求，但在 LeanCloud 云函数中，这是不必要的。
 }
 /*
 func main() {
