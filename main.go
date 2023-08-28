@@ -166,7 +166,7 @@ func run() {
 
 func executeTask(req *leancloud.FunctionRequest) (interface{}, error) {
     // 这里添加您的实际定时任务逻辑
-	run()
+	//run()
     return map[string]string{
         "status": "success",
     }, nil
