@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"time"
-
+	"net/http"
 	"github.com/superggfun/smoba/config"
 	"github.com/superggfun/smoba/doGift"
 	"github.com/superggfun/smoba/doTask"
@@ -180,8 +180,12 @@ func main() {
     // 定义云函数
     leancloud.Engine.Define("executeTaskFunction", executeTask)
 
-    // 在此，您不需要显式地启动任何服务监听，因为 LeanCloud 云函数平台会处理请求并调用您定义的函数。
-    // 如果您在本地测试，您可能需要添加某种方式来启动 HTTP 服务并监听请求，但在 LeanCloud 云函数中，这是不必要的。
+    // 启动一个简单的 HTTP 服务
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        w.Write([]byte("Service is running!"))
+    })
+
+    http.ListenAndServe(":3000", nil)
 }
 /*
 func main() {
