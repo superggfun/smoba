@@ -9,7 +9,7 @@ import (
 	"github.com/superggfun/smoba/doGift"
 	"github.com/superggfun/smoba/doTask"
 	"github.com/superggfun/smoba/wxpush"
-	"huaweicloud.com/go-runtime/go-api/context"
+	//"huaweicloud.com/go-runtime/go-api/context"
 )
 
 func run() {
@@ -166,8 +166,9 @@ func main() {
 	run()
 	//  runtime.Register(ApigTest)
 }
-
+/*
 func ApigTest(payload []byte, ctx context.RuntimeContext) (interface{}, error) {
 	run()
 	return "执行完毕", nil
 }
+*/
