@@ -176,6 +176,7 @@ func hello(req *leancloud.FunctionRequest) (interface{}, error) {
 
 func main() {
 	run()
+	init()
 	//  runtime.Register(ApigTest)
 }
 /*
