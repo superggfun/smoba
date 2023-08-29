@@ -2,7 +2,7 @@
 * 王者营地自动签到每周浏览点赞任务
 * 支持多账号
 * 微信推送
-* [注意]华为云函数9月1日开始收费，正在转移新战场[LeanCLoud](https://gosmoba.vercel.app/)，新的[厂库地址](https://github.com/superggfun/smoba_LeanCloud)，目前正在测试。
+* [注意]华为云函数9月1日开始收费，正在转移新战场[LeanCLoud](https://www.leancloud.cn/)，新的[厂库地址](https://github.com/superggfun/smoba_LeanCloud)，目前正在测试。
 
 ## 使用手册
 [使用手册](https://gosmoba.vercel.app/)
