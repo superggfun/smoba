@@ -13,15 +13,15 @@ func (m *Account) RunTask(TaskId string) ([]string, error) {
 	case "2019071900006": //关注作者
 		any, err = m.Subscribe()
 
-	case "2022061700002": //支持点赞
+	case "2023091500002": //支持点赞
 		any, err = m.AddedLikes()
 
 	case "2019072200001": //启动游戏
 		err = m.RunGame()
 
-	case "2019071900003": //分享内容
+	case "2024010800004": //分享内容
 		err = m.ShareGame()
-	case "2022061700001": //浏览资讯
+	case "2024010800001": //浏览资讯
 		any, err = m.ViewedNews()
 	case "2022101100011": //浏览战绩
 		err = m.ViewRecords()
